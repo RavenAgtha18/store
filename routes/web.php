@@ -1,5 +1,23 @@
 <?php
 
+
+use App\Http\Controllers\{
+    DashboardController,
+    KategoriController,
+    LaporanController,
+    ProdukController,
+    MemberController,
+    PengeluaranController,
+    PembelianController,
+    PembelianDetailController,
+    PenjualanController,
+    PenjualanDetailController,
+    SettingController,
+    SupplierController,
+    UserController,
+};
+
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +32,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('welcome');
+    })->name('dashboard');
+});
+
+// Route::middleware(['auth:sactum','verified'])->get('/dashboard', function () {
+//     return view('welcome');
+// })->name('dashboard');
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
+    Route::resource('/kategori', KategoriController::class);
+
+});
+
+
