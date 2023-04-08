@@ -80,7 +80,7 @@
 
 
 </div>
-@includeif('layouts.footer')
+
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->

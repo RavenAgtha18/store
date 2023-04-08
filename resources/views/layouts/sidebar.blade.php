@@ -24,26 +24,26 @@
                     <a href="{{ route('kategori.index') }}">
                         <i class="fa fa-cubes"></i> <span>Kategori</span>
                     </a>
-                    <a>
+                    <a href="{{ route('produk.index') }}">
                         <i class="fa fa-cube"></i> <span>Produk</span>
                     </a>
-                    <a>
+                    <a href="{{ route('member.index') }}">
                         <i class="fa fa-user-o"></i> <span>Member</span>
                     </a>
-                    <a>
+                    <a href="{{ route('supplier.index') }}">
                         <i class="fa fa-users"></i> <span>Supplier</span>
                     </a>
                 </li>
             </li>
             <li class="header">TRANSAKSI
                 <li>
-                    <a>
+                    <a href="{{ route('pengeluaran.index') }}">
                         <i class="fa fa-cart-arrow-down"></i> <span>Pengeluararn</span>
                     </a>
-                    <a>
+                    <a href="{{ route('pembelian.index') }}">
                         <i class="fa fa-cart-plus"></i> <span>Pembelian</span>
                     </a>
-                    <a>
+                    <a href="{{ route('penjualan.index') }}">
                         <i class="fa fa-shopping-basket"></i> <span>Penjualan</span>
                     </a>
                     <a>
