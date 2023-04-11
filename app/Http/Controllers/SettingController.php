@@ -2,64 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Models\Setting;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return view('setting.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show()
     {
-        //
+        return Setting::first();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
-    }
+        $setting = Setting::first();
+        $setting->nama_perusahaan = $request->nama_perusahaan;
+        $setting->telepon = $request->telepon;
+        $setting->alamat = $request->alamat;
+        $setting->diskon = $request->diskon;
+        $setting->tipe_nota = $request->tipe_nota;
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Setting $setting)
-    {
-        //
-    }
+        if ($request->hasFile('path_logo')) {
+            $file = $request->file('path_logo');
+            $nama = 'logo-' . date('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/img'), $nama);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Setting $setting)
-    {
-        //
-    }
+            $setting->path_logo = "/img/$nama";
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Setting $setting)
-    {
-        //
-    }
+        if ($request->hasFile('path_kartu_member')) {
+            $file = $request->file('path_kartu_member');
+            $nama = 'logo-' . date('Y-m-dHis') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/img'), $nama);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Setting $setting)
-    {
-        //
+            $setting->path_kartu_member = "/img/$nama";
+        }
+
+        $setting->update();
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 }

@@ -4,13 +4,13 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{{ asset('AdminLTE-2/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+            <img src="{{ url(auth()->user()->foto ?? '') }}" class="img-circle img-profil" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            <p>{{ auth()->user()->name }}</p>
+            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
-      </div>
+    </div>
 
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
@@ -46,17 +46,17 @@
                     <a href="{{ route('penjualan.index') }}">
                         <i class="fa fa-shopping-basket"></i> <span>Penjualan</span>
                     </a>
-                    <a>
+                    <a href="{{ route('transaksi.index') }}">
                         <i class="fa fa-bookmark-o"></i> <span>Transaksi Lama</span>
                     </a>
-                    <a>
+                    <a href="{{ route('transaksi.baru') }}">
                         <i class="fa fa-bookmark"></i> <span>Transaksi Baru</span>
                     </a>
                 </li>
             </li>
             <li class="header">REPORT
                 <li>
-                    <a>
+                    <a href="{{ route('laporan.index') }}">
                         <i class="fa fa-bullhorn"></i> <span>Laporan</span>
                     </a>
                    
@@ -64,11 +64,11 @@
             </li>
             <li class="header">SYSTEM
                 <li>
-                    <a>
+                    <a href="{{ route('user.index') }}">
                         <i class="fa fa-dashboard"></i> <span>User</span>
                     </a>
                    
-                    <a>
+                    <a href="{{ route("setting.index") }}">
                         <i class="fa fa-user-secret"></i> <span>Pengaturan</span>
                     </a>
                    
