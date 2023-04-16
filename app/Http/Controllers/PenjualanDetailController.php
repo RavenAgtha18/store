@@ -13,6 +13,8 @@ class PenjualanDetailController extends Controller
 {
     public function index()
     {
+        $tanggalAwal = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
+        $tanggalAkhir = date('Y-m-d');
         $produk = Produk::orderBy('nama_produk')->get();
         $member = Member::orderBy('nama')->get();
         $diskon = Setting::first()->diskon ?? 0;
@@ -22,7 +24,7 @@ class PenjualanDetailController extends Controller
             $penjualan = Penjualan::find($id_penjualan);
             $memberSelected = $penjualan->member ?? new Member();
 
-            return view('penjualan_detail.index', compact('produk', 'member', 'diskon', 'id_penjualan', 'penjualan', 'memberSelected'));
+            return view('penjualan_detail.index', compact('produk', 'member', 'diskon', 'id_penjualan', 'penjualan', 'memberSelected','tanggalAwal', 'tanggalAkhir'));
         } 
     }
 

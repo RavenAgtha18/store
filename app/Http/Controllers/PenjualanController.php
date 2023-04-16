@@ -13,8 +13,63 @@ class PenjualanController extends Controller
 {
     public function index()
     {
-        return view('penjualan.index');
+        
+        $tanggalAwal = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
+        $tanggalAkhir = date('Y-m-d');
+        return view('penjualan.index', compact('tanggalAwal', 'tanggalAkhir'));
     }
+
+    public function getData($awal, $akhir)
+    {
+        $no = 1;
+        $data = array();
+        $pendapatan = 0;
+        $total_pendapatan = 0;
+
+        while (strtotime($awal) <= strtotime($akhir)) {
+            $tanggal = $awal;
+            $awal = date('Y-m-d', strtotime("+1 day", strtotime($awal)));
+
+           
+            $total_pembelian = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('bayar');
+            $total_item = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('total_item');
+            $total_harga = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('total_harga');
+            $total_diskon = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('diskon');
+           
+        
+          
+
+           
+
+            $row = array();
+            $row['DT_RowIndex'] = $no++;
+            $row['tanggal'] = tanggal_indonesia($tanggal, false);
+            $row['total_item'] =($total_item) ;
+            $row['total_harga'] =($total_harga) ;
+            $row['diskon'] =($total_diskon) ;
+            $row['pembelian'] = format_uang($total_pembelian);
+          
+          
+
+            $data[] = $row;
+        }
+
+        $data[] = [
+            'DT_RowIndex' => '',
+            'tanggal' => '',
+            'supplier' => '',
+            'pembelian' => '',
+            'total_item' => '',
+            'total_harga' => '',
+            'diskon' => '',
+            'bayar' => '',
+           
+
+        ];
+
+        return $data;
+    }
+
 
     public function data()
     {
@@ -177,5 +232,13 @@ class PenjualanController extends Controller
         $pdf = PDF::loadView('penjualan.nota_besar', compact('setting', 'penjualan', 'detail'));
         $pdf->setPaper(0,0,609,440, 'potrait');
         return $pdf->stream('Transaksi-'. date('Y-m-d-his') .'.pdf');
+    }
+    public function exportPDF($awal, $akhir)
+    {
+        $data = $this->getData($awal, $akhir);
+        $pdf  = PDF::loadView('penjualan.pdf', compact('awal', 'akhir', 'data'));
+        $pdf->setPaper('a4', 'potrait');
+        
+        return $pdf->stream('Laporan-pendapatan-'. date('Y-m-d-his') .'.pdf');
     }
 }

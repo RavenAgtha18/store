@@ -4,13 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pengeluaran;
+use PDF;
 
 class PengeluaranController extends Controller
 {
     public function index()
     {
-        return view('pengeluaran.index');
+        $tanggalAwal = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
+        $tanggalAkhir = date('Y-m-d');
+        return view('pengeluaran.index',  compact('tanggalAwal', 'tanggalAkhir'));
     }
+
+    public function getData($awal, $akhir)
+    {
+        $no = 1;
+        $data = array();
+        $pendapatan = 0;
+        $total_pendapatan = 0;
+
+        while (strtotime($awal) <= strtotime($akhir)) {
+            $tanggal = $awal;
+            $awal = date('Y-m-d', strtotime("+1 day", strtotime($awal)));
+
+            $total_pengeluaran = Pengeluaran::where('created_at', 'LIKE', "%$tanggal%")->sum('nominal');
+           
+        
+          
+
+           
+
+            $row = array();
+            $row['DT_RowIndex'] = $no++;
+            $row['tanggal'] = tanggal_indonesia($tanggal, false);
+            $row['pengeluaran'] = format_uang($total_pengeluaran);
+           
+        
+          
+          
+
+            $data[] = $row;
+        }
+
+        $data[] = [
+            'DT_RowIndex' => '',
+            'tanggal' => '',
+            'supplier' => '',
+            'pembelian' => '',
+            'total_item' => '',
+            'total_harga' => '',
+            'diskon' => '',
+            'bayar' => '',
+           
+
+        ];
+
+        return $data;
+    }
+
 
     public function data()
     {
@@ -109,5 +159,14 @@ class PengeluaranController extends Controller
         $pengeluaran = Pengeluaran::find($id)->delete();
 
         return response(null, 204);
+    }
+
+    public function exportPDF($awal, $akhir)
+    {
+        $data = $this->getData($awal, $akhir);
+        $pdf  = PDF::loadView('pengeluaran.pdf', compact('awal', 'akhir', 'data'));
+        $pdf->setPaper('a4', 'potrait');
+        
+        return $pdf->stream('Laporan-pendapatan-'. date('Y-m-d-his') .'.pdf');
     }
 }

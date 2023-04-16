@@ -13,6 +13,10 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="box">
+            <div class="box-header with-border">            
+                        
+                <a href="{{ route('penjualan.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank" class="btn btn-success btn-xs btn-flat"><i class="fa fa-file-excel-o"></i> Export PDF</a>
+            </div>
             <div class="box-body table-responsive">
                 <table class="table table-stiped table-bordered table-penjualan">
                     <thead>

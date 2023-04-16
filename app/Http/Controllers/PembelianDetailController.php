@@ -7,6 +7,7 @@ use App\Models\PembelianDetail;
 use App\Models\Produk;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use PDF;
 
 class PembelianDetailController extends Controller
 {
@@ -111,5 +112,14 @@ class PembelianDetailController extends Controller
         ];
 
         return response()->json($data);
+    }
+
+    public function exportPDF($awal, $akhir)
+    {
+        $data = $this->getData($awal, $akhir);
+        $pdf  = PDF::loadView('laporan.pdf', compact('awal', 'akhir', 'data'));
+        $pdf->setPaper('a4', 'potrait');
+        
+        return $pdf->stream('Laporan-pendapatan-'. date('Y-m-d-his') .'.pdf');
     }
 }

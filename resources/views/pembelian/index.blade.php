@@ -4,6 +4,10 @@
     Daftar Pembelian
 @endsection
 
+@push('css')
+<link rel="stylesheet" href="{{ asset('/AdminLTE-2/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+@endpush
+
 @section('breadcrumb')
     @parent
     <li class="active">Daftar Pembelian</li>
@@ -15,6 +19,8 @@
         <div class="box">
             <div class="box-header with-border">
                 <button onclick="addForm()" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Transaksi Baru</button>
+                <button onclick="updatePeriode()" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Ubah Periode</button>             
+                <a href="{{ route('pembelian.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank" class="btn btn-success btn-xs btn-flat"><i class="fa fa-file-excel-o"></i> Export PDF</a>
                 @empty(! session('id_pembelian'))
                 <a href="{{ route('pembelian_detail.index') }}" class="btn btn-info btn-xs btn-flat"><i class="fa fa-pencil"></i> Transaksi Aktif</a>
                 @endempty
@@ -39,9 +45,12 @@
 
 @includeIf('pembelian.supplier')
 @includeIf('pembelian.detail')
+@includeIf('laporan.form')
+
 @endsection
 
 @push('scripts')
+<script src="{{ asset('/AdminLTE-2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
     let table, table1;
 
@@ -64,6 +73,11 @@
                 {data: 'bayar'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
+        });
+
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
         });
 
         $('.table-supplier').DataTable();
@@ -107,6 +121,10 @@
                     return;
                 });
         }
+    }
+
+    function updatePeriode() {
+        $('#modal-form').modal('show');
     }
 </script>
 @endpush
