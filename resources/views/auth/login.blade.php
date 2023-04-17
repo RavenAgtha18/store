@@ -7,7 +7,7 @@
     <div class="login-box-body">
         <div class="login-logo">
             <a href="{{ url('/') }}">
-                Login
+               
             </a>
         </div>
 
@@ -42,9 +42,15 @@
                 <!-- /.col -->
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    
+         
                 </div>
                 <!-- /.col -->
             </div>
+      <p class="mb-0">
+        
+        <a href="{{ route('register') }} " class="text-center">Register</a>
+      </p>
         </form>
     </div>
     <!-- /.login-box-body -->
