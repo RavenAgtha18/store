@@ -15,7 +15,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
             <li>
-                <a>
+                <a href="{{ route('dashboard') }}">
                     <i class="fa fa-bars"></i> <span>Dashboard</span>
                 </a>
             </li>

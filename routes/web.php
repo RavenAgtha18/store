@@ -35,21 +35,15 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('welcome');
-    })->name('dashboard');
-});
+
 
 // Route::middleware(['auth:sactum','verified'])->get('/dashboard', function () {
 //     return view('welcome');
 // })->name('dashboard');
 
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
     Route::resource('/kategori', KategoriController::class);
@@ -122,6 +116,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::get('/setting/first', [SettingController::class, 'show'])->name('setting.show');
     Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
+
+    Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
+    Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
 
 
 
